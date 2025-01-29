@@ -73,6 +73,7 @@ export default function SecondaryScreeningReports() {
 
   const [searchObject, setSearchObject] = useState<any>({})
   const [searching, setSearching] = useState(false)
+ const [countsObj, setCountsObj] = useState<any>({})
 
   const [{ UserId }] = userSelectedValue()
 
@@ -101,6 +102,8 @@ export default function SecondaryScreeningReports() {
     setTableData(response?.data.TotalData)
     setCopyOfTableData(response?.data.TotalData)
     setTotalCount(response?.data.TotalCount)
+    delete response.data.TotalData;
+    setCountsObj(response?.data);
     setLoading(false)
     // setSearching(false)
   }
@@ -135,6 +138,7 @@ export default function SecondaryScreeningReports() {
         <SelectStateAndDisReports
           handleSubmitForm={handleSearchData}
           handleDownloadReports={handleDownloadReports}
+          countsObj={countsObj}
         />
       </BorderWithTitle>
       <PaginatedTable

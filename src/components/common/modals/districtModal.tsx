@@ -144,17 +144,19 @@ export default function DistrictModal({
               helperText={touched.Name && errors.Name}
               isModal={true}
             />
-            <SelectOption
-              label={'NgoOrGov'}
-              name={'NgoOrGov'}
-              value={values.NgoOrGov}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              options={NGO_GOV}
-              errors={touched.NgoOrGov && Boolean(errors.NgoOrGov)}
-              helperText={touched.NgoOrGov && errors.NgoOrGov}
-              isModal={true}
-            />
+            {isLastAssign && (
+              <SelectOption
+                label={'NgoOrGov'}
+                name={'NgoOrGov'}
+                value={values.NgoOrGov}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                options={NGO_GOV}
+                errors={touched.NgoOrGov && Boolean(errors.NgoOrGov)}
+                helperText={touched.NgoOrGov && errors.NgoOrGov}
+                isModal={true}
+              />
+            )}
           </CModalBody>
           <CModalFooter>
             <CButton color="secondary" onClick={() => setVisible(false)}>

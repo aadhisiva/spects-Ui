@@ -11,3 +11,5 @@ export const SEARCH_REPORTS = 'SearchReports'
 export const PRIMARY_SCREENING = 'PrimaryScreeningReports'
 export const STATE_AND_DISTRICT_DATA = 'StateAndDistrictWiseReports'
 export const REFRACTIONIST_LOGIN = 'RefractionistLoginWiseData'
+
+export const PREVIEW_PAGE = 'PreviewPage'

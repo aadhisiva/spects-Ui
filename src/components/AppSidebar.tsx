@@ -56,7 +56,7 @@ const AppSidebar = () => {
         <CSidebarBrand>
           <img src={Logo} alt="Karmataka" sizes="10px" width={50} loading="lazy" />
         </CSidebarBrand>
-        <span style={{ fontSize: '19px' }}>Spectacles</span>
+        <span style={{ fontSize: '20px' }}>Spectacles</span>
         <CCloseButton
           className="d-lg-none"
           dark={false}

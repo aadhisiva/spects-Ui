@@ -3,7 +3,8 @@ import { useLocation } from 'react-router-dom'
 
 import routes from '../routes'
 
-import { CBreadcrumb, CBreadcrumbItem } from '@coreui/react'
+import { CBreadcrumb, CBreadcrumbItem, CCol, CRow } from '@coreui/react'
+import './sidebar.css'
 
 const AppBreadcrumb = () => {
   const currentLocation = useLocation().pathname
@@ -32,10 +33,12 @@ const AppBreadcrumb = () => {
   const breadcrumbs = getBreadcrumbs(currentLocation)
 
   return (
-      <CBreadcrumb className="my-0">
-        <CBreadcrumbItem href="/">Auth</CBreadcrumbItem>
-        <CBreadcrumbItem active={true}>{currentLocation.split('/')[1]}</CBreadcrumbItem>
-        {/* {breadcrumbs.map((breadcrumb: any, index: any) => {
+    <>
+      <CCol md={6}>
+        <CBreadcrumb className="my-0">
+          <CBreadcrumbItem href="/spects/">Auth</CBreadcrumbItem>
+          <CBreadcrumbItem active={true}>{currentLocation.split('/')[1]}</CBreadcrumbItem>
+          {/* {breadcrumbs.map((breadcrumb: any, index: any) => {
         return (
           <CBreadcrumbItem
             {...(breadcrumb.active ? { active: true } : { href: breadcrumb.pathname })}
@@ -45,7 +48,17 @@ const AppBreadcrumb = () => {
           </CBreadcrumbItem>
         )
       })} */}
-      </CBreadcrumb>
+        </CBreadcrumb>
+      </CCol>
+      <CCol md={6}>
+        <div className="scroll-container">
+          <div className="scroll-content">
+            {/* Replace this with your actual content */}
+            <span className="scroll-title"> *** Spectacles distribution application ***</span>
+          </div>
+        </div>
+      </CCol>
+    </>
   )
 }
 

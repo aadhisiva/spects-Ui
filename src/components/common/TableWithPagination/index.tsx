@@ -108,15 +108,27 @@ const PaginatedTable = ({
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
-    setCurrentPage(1) // Reset to the first page
+    // setCurrentPage(1) // Reset to the first page
   }
 
   const handleRowsPerPageChange = (e: ChangeEvent<HTMLInputElement> | any) => {
     setRowsPerPage(Number(e.target.value))
-    setCurrentPage(1) // Reset to the first page
-  }
+    // setCurrentPage(1) // Reset to the first page
+  };
 
-  const visibleRows = pagination ? originalData : React.useMemo(() => {
+    // Filter rows based on the search term
+    const filteredRows = React.useMemo(() => {
+      if (!searchTerm) return originalData; // If no search term, return original data
+  
+      return originalData.filter((row: any) => {
+        // Search through all columns for the search term
+        return Object.values(row).some((value) =>
+          value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      });
+    }, [searchTerm, originalData]);
+
+  const visibleRows = pagination ? filteredRows : React.useMemo(() => {
     const startIndex = (currentPage - 1) * rowsPerPage; // Calculate the starting index
     const endIndex = startIndex + rowsPerPage;         // Calculate the ending index
   

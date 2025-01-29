@@ -60,27 +60,31 @@ export default function DistrictAssign() {
   const [totalCount, setTotalCount] = useState(0)
   const [formData, setFormData] = useState({})
   const [tableData, setTableData] = useState([])
+  const [copyOfTableData, setCopyOfTableData] = useState([])
 
   const [currentPage, setCurrentPage] = useState(1) // Current page
   const [rowsPerPage, setRowsPerPage] = useState(10) // Rows per page
 
   const fecthIntialData = async () => {
-    let result = await postRequest(
+    let { data } = await postRequest(
       'getAssignedMasters',
       {
         ReqType: 'District',
         DataType: '',
         Mobile: '987',
+        PageNumber: currentPage,
+        RowsPerPage: rowsPerPage,
       },
       setLoading,
     )
-    setTableData(result.data)
-    setTotalCount(result?.length || 0)
+    setTableData(data.TotalData)
+    setCopyOfTableData(data?.TotalData)
+    setTotalCount(data?.TotalCount || 0)
   }
 
   useEffect(() => {
     fecthIntialData()
-  }, [])
+  }, [rowsPerPage, currentPage])
 
   const handleClickAdd = (values: any) => {
     setFormData(values)
@@ -137,6 +141,7 @@ export default function DistrictAssign() {
         setCurrentPage={setCurrentPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
+        pagination={true}
       />
     </div>
   )

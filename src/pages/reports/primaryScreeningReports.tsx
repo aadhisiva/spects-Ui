@@ -4,6 +4,7 @@ import userSelectedValue from '../../components/common/customHooks/userSelectedV
 import { postRequest } from '../../components/services/apiServices'
 import PaginatedTable from '../../components/common/TableWithPagination'
 import { CCol, CRow } from '@coreui/react'
+import useAccess from '../../components/common/customHooks/useAccess'
 
 const headCells = [
   {
@@ -52,7 +53,7 @@ export default function PrimaryScreeningReports() {
   const [currentPage, setCurrentPage] = useState(1) // Current page
   const [rowsPerPage, setRowsPerPage] = useState(10) // Rows per page
 
-  const [{ UserId }] = userSelectedValue()
+  const [{ reportsReqType }] = useAccess();
 
   useEffect(() => {
       getDataFromApi()
@@ -62,8 +63,7 @@ export default function PrimaryScreeningReports() {
     let response = await postRequest(
       'fetchPrimaryScreeningReports',
       {
-        ReqType: "District",
-        UserId: UserId || null,
+        ReqType: reportsReqType
       },
       setLoading,
     );

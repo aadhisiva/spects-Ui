@@ -38,6 +38,6 @@ export const postRequest = async (url: string, body: any, loadAction: any) => {
         }
     } catch (error: any) {
         loadAction(false);
-        toast.error(error.message);
+        toast.error(error.message || "please try again after some time.");
     }
 };

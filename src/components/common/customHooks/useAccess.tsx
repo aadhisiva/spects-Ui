@@ -51,6 +51,16 @@ export default function useAccess() {
     TalukLevel : superAcces ? "" : districtAcces ? "" : talukAcces ? "District" : phcoAcces ? "Taluk" : subCenterAcces ? "Taluk": "",
     PhcoLevel : superAcces ? "" : districtAcces ? "" : talukAcces ? "" : phcoAcces ? "" : subCenterAcces ? "Phco" : ""
   };
+
+  const reportsReqType = superAcces
+  ? 'Admin'
+  : districtAcces
+    ? 'Admin'
+    : talukAcces
+      ? 'District'
+      : phcoAcces
+        ? 'Taluk'
+        : 'SubCenter';
   
   return [
     {
@@ -62,7 +72,8 @@ export default function useAccess() {
       loginAuthAccess,
       mobileAuthAccess,
       dropDownAuthAccess,
-      authValues
+      authValues,
+      reportsReqType
     },
   ]
 }

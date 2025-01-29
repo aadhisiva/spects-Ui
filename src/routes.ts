@@ -3,6 +3,7 @@ import {
   CHILD_ROLES,
   DISTRICT_ASSIGN,
   PHCO_ASSIGN,
+  PREVIEW_PAGE,
   PRIMARY_SCREENING,
   REFRACTIONIST_LOGIN,
   ROLE_ACCESS,
@@ -28,6 +29,7 @@ const SearchReportsPage = React.lazy(() => import('./pages/reports/searchReports
 const PrimaryScreeningPage = React.lazy(() => import('./pages/reports/primaryScreeningReports'));
 const StateAndDistrictsWiseDataPage = React.lazy(() => import('./pages/reports/stateAndDistrictsWiseData'));
 const RefractionisiLoginDataPage = React.lazy(() => import('./pages/reports/refractionisiLoginData'));
+const PreviewPage = React.lazy(() => import('./pages/reports/preview'));
 
 const routes = [
   // { path: '/', exact: true, name: 'Dashboard' },
@@ -46,6 +48,7 @@ const routes = [
   { path: PRIMARY_SCREENING, name: 'Primary Screening', element: PrimaryScreeningPage },
   { path: STATE_AND_DISTRICT_DATA, name: 'State & District Wise Data', element: StateAndDistrictsWiseDataPage },
   { path: REFRACTIONIST_LOGIN, name: 'Refractionist Login Data', element: RefractionisiLoginDataPage },
+  { path: PREVIEW_PAGE, name: 'PreviewPage', element: PreviewPage }
 ]
 
 export default routes

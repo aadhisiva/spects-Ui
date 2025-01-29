@@ -17,10 +17,10 @@ const styles: any = {
 }
 const Dashboard = () => {
   const [loading, setLoading] = useState(false)
-  const [counts, setCounts] = useState<any>({})
+  const [counts, setCounts] = useState<any>([])
 
   const [{ UserId }] = userSelectedValue()
-  const [{ superAcces, districtAcces, talukAcces, phcoAcces }] = useAccess()
+  const [{ reportsReqType }] = useAccess()
 
   useEffect(() => {
     fetchCountsByLogin()
@@ -30,24 +30,17 @@ const Dashboard = () => {
     let response = await postRequest(
       'fetchCountsByLogin',
       {
-        ReqType: superAcces
-          ? 'Admin'
-          : districtAcces
-            ? 'Admin'
-            : talukAcces
-              ? 'District'
-              : phcoAcces
-                ? 'Taluk'
-                : 'SubCenter',
+        ReqType: reportsReqType,
         UserId: UserId,
       },
       setLoading,
     )
-    setCounts(response?.data)
+    setCounts(response?.data || [])
   }
-
   return (
     <CRow xs={{ gutter: 4 }}>
+      {/* {counts?.length !== 0 &&
+    <> */}
       <SpinnerLoder loading={loading} />
       <CCol sm={6} xl={4} xxl={3}>
         <CPopover
@@ -55,7 +48,9 @@ const Dashboard = () => {
             <ul>
               <li>
                 Student :{' '}
-                {counts[0]?.StudentPending + counts[0]?.StudentReady + counts[0]?.StudentDelivered || 0}
+                {counts[0]?.StudentPending +
+                  counts[0]?.StudentReady +
+                  counts[0]?.StudentDelivered || 0}
               </li>
               <li>
                 Benficiary :{' '}
@@ -88,7 +83,12 @@ const Dashboard = () => {
           trigger={['hover', 'focus']}
         >
           <span tabIndex={0}>
-            <CWidgetStatsA style={styles} color="primary" value={counts[0]?.Pending} title="Pending" />
+            <CWidgetStatsA
+              style={styles}
+              color="primary"
+              value={counts[0]?.Pending}
+              title="Pending"
+            />
           </span>
         </CPopover>
       </CCol>
@@ -107,7 +107,7 @@ const Dashboard = () => {
             <CWidgetStatsA
               style={styles}
               color="warning"
-              value={counts[0]?.Delivered || 0}
+              value={counts[0]?.Ready || 0}
               title="Ready For Develivery"
             />
           </span>
@@ -128,7 +128,7 @@ const Dashboard = () => {
             <CWidgetStatsA
               style={styles}
               color="info"
-              value={counts[0]?.Ready || 0}
+              value={counts[0]?.Delivered || 0}
               title="Delivered"
             />
           </span>

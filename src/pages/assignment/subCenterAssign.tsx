@@ -5,11 +5,11 @@ import PaginatedTable from '../../components/common/TableWithPagination'
 import DistrictModal from '../../components/common/modals/districtModal'
 import axiosInstance from '../../axiosInstance'
 import SpinnerLoder from '../../components/common/spinnerLoder'
-import './assignment.css'
-import SelectPhco from '../../components/common/assignmentSelect/selectPhco'
 import SelectSubCenter from '../../components/common/assignmentSelect/selectSubCenter'
 import userSelectedValue from '../../components/common/customHooks/userSelectedValue'
 import useAccess from '../../components/common/customHooks/useAccess'
+import './assignment.css'
+import { postRequest } from '../../components/services/apiServices'
 
 const headCells = [
   {
@@ -75,33 +75,35 @@ export default function PhcoAssign() {
   const [totalCount, setTotalCount] = useState(0)
   const [formData, setFormData] = useState({})
   const [tableData, setTableData] = useState([])
+  const [copyOfTableData, setCopyOfTableData] = useState([])
 
   const [currentPage, setCurrentPage] = useState(1) // Current page
   const [rowsPerPage, setRowsPerPage] = useState(10) // Rows per page
 
-  const [{ loginAuthAccess, mobileAuthAccess }] = useAccess();
-    const [{ Mobile }] = userSelectedValue();
+  const [{ loginAuthAccess, mobileAuthAccess }] = useAccess()
+  const [{ Mobile }] = userSelectedValue()
 
   const fecthIntialData = async () => {
     setLoading(true)
-    let { data } = await axiosInstance.post('getAssignedMasters', {
-      ReqType: loginAuthAccess,
-      DataType: 'SubCenter',
-      Mobile: mobileAuthAccess ? Mobile : "",
-    })
-    if (data?.code == 200) {
-      setTableData(data.data)
-      setTotalCount(data.data?.length || 0)
-      setLoading(false)
-    } else {
-      setLoading(false)
-      alert(data.message || 'please try again')
-    }
-  }
+    let { data } = await postRequest(
+      'getAssignedMasters',
+      {
+        ReqType: loginAuthAccess,
+        DataType: 'SubCenter',
+        Mobile: mobileAuthAccess ? Mobile : '',
+        PageNumber: currentPage,
+        RowsPerPage: rowsPerPage,
+      },
+      setLoading,
+    )
+    setTableData(data.TotalData)
+    setCopyOfTableData(data?.TotalData)
+    setTotalCount(data?.TotalCount || 0)
+  };
 
   useEffect(() => {
     fecthIntialData()
-  }, [])
+  }, [rowsPerPage, currentPage])
 
   const handleClickAdd = (values: any) => {
     setFormData(values)
@@ -110,17 +112,10 @@ export default function PhcoAssign() {
 
   const handleSubmitModal = async (values: any) => {
     setLoading(true)
-    values['ReqType'] = 2;
-    let { data } = await axiosInstance.post('assignmentProcess', values)
-    if (data.code == 200) {
-      await fecthIntialData()
-      setVisible(false)
-      setLoading(false)
-    } else {
-      setVisible(false)
-      setLoading(false)
-      toast.info(data.message || 'please try again')
-    }
+    values['ReqType'] = 2
+    await postRequest('assignmentProcess', values, setLoading)
+    await fecthIntialData()
+    setVisible(false)
   }
 
   const openModalForm = () => {
@@ -139,7 +134,7 @@ export default function PhcoAssign() {
   const handleClickModify = (data: any) => {
     setFormData(data)
     setVisible(!visible)
-  };
+  }
 
   return (
     <div>
@@ -158,6 +153,7 @@ export default function PhcoAssign() {
         setCurrentPage={setCurrentPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
+        pagination={true}
       />
     </div>
   )

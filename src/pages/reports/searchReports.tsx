@@ -6,6 +6,9 @@ import axiosInstance from '../../axiosInstance'
 import userSelectedValue from '../../components/common/customHooks/userSelectedValue'
 import { postRequest, PostRequestWithdownloadFile } from '../../components/services/apiServices'
 import SpinnerLoder from '../../components/common/spinnerLoder'
+import PreviewPage from './preview'
+import { useNavigate } from 'react-router-dom'
+import { PREVIEW_PAGE } from '../../components/utils/routingPath'
 
 const headCells = [
   {
@@ -72,10 +75,15 @@ export default function SearchReports() {
   const [currentPage, setCurrentPage] = useState(1) // Current page
   const [rowsPerPage, setRowsPerPage] = useState(10) // Rows per page
 
+  const [countsObj, setCountsObj] = useState<any>({})
+  const [formData, setformData] = useState<any>({})
   const [searchObject, setSearchObject] = useState<any>({})
   const [searching, setSearching] = useState(false)
+  const [isPreview, setPreview] = useState(false)
 
   const [{ UserId }] = userSelectedValue()
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (searching) {
@@ -105,6 +113,8 @@ export default function SearchReports() {
     setTableData(response?.data.TotalData)
     setCopyOfTableData(response?.data.TotalData)
     setTotalCount(response?.data.TotalCount)
+    delete response.data.TotalData
+    setCountsObj(response?.data)
     setLoading(false)
     // setSearching(false)
   }
@@ -135,7 +145,6 @@ export default function SearchReports() {
     )
   }
 
-  const handleClickModify = () => {}
   return (
     <div>
       <SpinnerLoder loading={loading} />
@@ -143,12 +152,20 @@ export default function SearchReports() {
         <SelectForReports
           handleSubmitForm={handleSearchData}
           handleDownloadReports={handleDownloadReports}
+          countsObj={countsObj}
         />
       </BorderWithTitle>
       <PaginatedTable
         headCells={headCells}
-        handleClickModify={handleClickModify}
-        title={'Searched Deatailed Data'}
+        handleClickModify={(obj: any) => {
+          navigate('/' + PREVIEW_PAGE, {
+            state: {
+              id: obj.id,
+              ReportType: searchObject.DataType == 'Other' ? 'other' : 'school',
+            },
+          })
+        }}
+        title={'Searched Detailed Data'}
         originalData={tableData}
         totalCount={totalCount}
         currentPage={currentPage}

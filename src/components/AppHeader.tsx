@@ -13,6 +13,7 @@ import {
   CNavLink,
   CNavItem,
   useColorModes,
+  CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilContrast, cilMenu, cilMoon, cilSun } from '@coreui/icons'
@@ -48,7 +49,7 @@ const AppHeader = () => {
         </CHeaderToggler>
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
-            <span className='header-title'>Spectacles Distribution</span>
+            <span className="header-title">Spectacles Distribution</span>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav>
@@ -101,9 +102,18 @@ const AppHeader = () => {
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
-      <CContainer className="px-4" fluid>
+      <CRow
+        className="px-4"
+        style={{
+          width: '100%',
+          height: '40px',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
         <AppBreadcrumb />
-      </CContainer>
+      </CRow>
     </CHeader>
   )
 }

@@ -16,12 +16,14 @@ interface ISelectDistrict {
   handleSubmitForm?: any
   loading?: boolean
   handleDownloadReports?: any
+  countsObj?: any
 }
 
 export default function SelectForReports({
   handleSubmitForm,
   loading,
   handleDownloadReports,
+  countsObj,
 }: ISelectDistrict) {
   const [isLoading, setLoading] = useState(false)
   const [districtDropdown, setDistrictDropdown] = useState([])
@@ -251,6 +253,26 @@ export default function SelectForReports({
           handleClick={() => handleDownloadReports(values)}
         />
         <ButtonWithLoader title={'Clear Filters'} handleClick={handleClearFilter} />
+        <CCol md={3} xs={6}>
+          <span style={{ fontSize: '19px', fontWeight: 'bold' }}>
+            TotalCount : {countsObj?.TotalCount || 0}
+          </span>
+        </CCol>
+        <CCol md={3} xs={6}>
+          <span style={{ fontSize: '19px', fontWeight: 'bold' }}>
+            OrderPending : {countsObj?.Pending || 0}
+          </span>
+        </CCol>
+        <CCol md={3} xs={6}>
+          <span style={{ fontSize: '19px', fontWeight: 'bold' }}>
+            ReadyForDeliver : {countsObj?.Ready || 0}
+          </span>
+        </CCol>
+        <CCol md={3} xs={6}>
+          <span style={{ fontSize: '19px', fontWeight: 'bold' }}>
+            Delivered : {countsObj?.Delivered || 0}
+          </span>
+        </CCol>
       </CRow>
     </div>
   )

@@ -5,16 +5,17 @@ import userSelectedValue from '../../components/common/customHooks/userSelectedV
 import { postRequest, PostRequestWithdownloadFile } from '../../components/services/apiServices'
 import PaginatedTable from '../../components/common/TableWithPagination'
 import SelectRefractionistReport from '../../components/common/assignmentSelect/selectRefractionistReport'
+import useAccess from '../../components/common/customHooks/useAccess'
 
 const headCells = [
   {
-    id: 'refractionist_mobile',
+    id: 'Mobile',
     numeric: false,
     disablePadding: true,
     label: 'Refractionist Mobile',
   },
   {
-    id: 'refractionist_name',
+    id: 'Name',
     numeric: false,
     disablePadding: true,
     label: 'Refractionist Name',
@@ -44,7 +45,7 @@ const headCells = [
     label: 'SubCenter Name',
   },
   {
-    id: 'CreatedDate',
+    id: 'UpdatedDate',
     numeric: false,
     disablePadding: true,
     label: 'Date&Time',
@@ -66,14 +67,16 @@ export default function RefractionistLoginData() {
   const [rowsPerPage, setRowsPerPage] = useState(10) // Rows per page
 
   const [searchObject, setSearchObject] = useState<any>({})
-  const [searching, setSearching] = useState(false)
+  const [searching, setSearching] = useState(true)
 
-  const [{ UserId }] = userSelectedValue()
+  const [{ UserId }] = userSelectedValue();
+  const [{ reportsReqType }] = useAccess();
 
   useEffect(() => {
     if (searching) {
       getDataFromApi()
     }
+    setSearching(false);
   }, [rowsPerPage, currentPage, searching, searchObject])
 
   const getDataFromApi = async () => {
@@ -81,7 +84,7 @@ export default function RefractionistLoginData() {
     let response = await postRequest(
       'fetchRefraLoginReports',
       {
-        DataType: "hg",
+        DataType: reportsReqType,
         FromDate: FromDate || null,
         ToDate: ToDate || null,
         PageNumber: currentPage,
@@ -93,7 +96,6 @@ export default function RefractionistLoginData() {
     setCopyOfTableData(response?.data.TotalData)
     setTotalCount(response?.data.TotalCount)
     setLoading(false)
-    setSearching(false)
   }
 
   const handleSearchData = (values: any) => {

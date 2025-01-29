@@ -5,8 +5,8 @@ import { store } from "./pages/redux/store";
 // Create an Axios instance
 const axiosInstance = axios.create({
   // baseURL: "http://localhost:8889/api/admin", // Set your API base URL
-  baseURL: "https://spectacles.karnataka.gov.in/api/admin", // Set your API base URL
-  timeout: 30000, // Set a timeout (optional)
+  baseURL: "https://spectacles.karnataka.gov.in/edcs/admin", // Set your API base URL
+  timeout: 20000, // Set a timeout (optional)
   headers: {
     "Content-Type": "application/json",
   },

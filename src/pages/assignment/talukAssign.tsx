@@ -10,6 +10,7 @@ import './assignment.css'
 import SelectTaluk from '../../components/common/assignmentSelect/selectTaluk'
 import useAccess from '../../components/common/customHooks/useAccess'
 import userSelectedValue from '../../components/common/customHooks/userSelectedValue'
+import { postRequest } from '../../components/services/apiServices'
 
 const headCells = [
   {
@@ -63,6 +64,7 @@ export default function TalukAssign() {
   const [totalCount, setTotalCount] = useState(0)
   const [formData, setFormData] = useState({})
   const [tableData, setTableData] = useState([])
+  const [copyOfTableData, setCopyOfTableData] = useState([])
 
   const [currentPage, setCurrentPage] = useState(1) // Current page
   const [rowsPerPage, setRowsPerPage] = useState(10) // Rows per page
@@ -72,24 +74,21 @@ export default function TalukAssign() {
 
   const fecthIntialData = async () => {
     setLoading(true)
-    let { data } = await axiosInstance.post('getAssignedMasters', {
+    let { data } = await postRequest('getAssignedMasters', {
       ReqType: loginAuthAccess,
       DataType: "Taluk",
       Mobile: mobileAuthAccess ? Mobile : "87",
-    })
-    if (data?.code == 200) {
-      setTableData(data.data)
-      setTotalCount(data.data?.length || 0)
-      setLoading(false)
-    } else {
-      setLoading(false)
-      alert(data.message || 'please try again')
-    }
+      PageNumber: currentPage,
+      RowsPerPage: rowsPerPage,
+    }, setLoading)
+    setTableData(data.TotalData)
+    setCopyOfTableData(data?.TotalData)
+    setTotalCount(data?.TotalCount || 0)
   }
 
   useEffect(() => {
     fecthIntialData()
-  }, [])
+  }, [rowsPerPage, currentPage])
 
   const handleClickAdd = (values: any) => {
     setFormData(values)
@@ -146,6 +145,7 @@ export default function TalukAssign() {
         setCurrentPage={setCurrentPage}
         rowsPerPage={rowsPerPage}
         setRowsPerPage={setRowsPerPage}
+        pagination={true}
       />
     </div>
   )

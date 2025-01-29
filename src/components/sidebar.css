@@ -14,3 +14,28 @@
     color: black;
     font-size: 30px;
 }
+
+.scroll-container {
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+  }
+  
+  .scroll-content {
+    display: inline-block;
+    animation: scroll 10s linear infinite;
+  }
+  
+  @keyframes scroll {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  
+.scroll-title {
+    color: rgb(130, 179, 37);
+    font-size: 15px;
+}
